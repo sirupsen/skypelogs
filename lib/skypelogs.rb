@@ -5,7 +5,18 @@ require 'pry'
 module Skypelogs
   # Only support Mac ATM
   def self.path
-    File.expand_path(`ls ~/Library/Application\\ Support/Skype/**/main.db`.strip)
+    found_files = Dir.glob([
+      # OSX
+      File.join(Dir.home, 'Library', 'Application Support', 'Skype', '**', 'main.db'),
+      # Linux
+      File.join(Dir.home, '.Skype', '**', 'main.db'),
+    ])
+
+    if found_files.length > 0
+      found_files.first
+    else
+      raise 'Unsupported operating system'
+    end
   end
 
   def self.messages(partner = nil)
