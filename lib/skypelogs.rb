@@ -12,11 +12,8 @@ module Skypelogs
       File.join(Dir.home, '.Skype', '**', 'main.db'),
     ])
 
-    if found_files.length > 0
-      found_files.first
-    else
-      raise 'Unsupported operating system'
-    end
+    return found_files.first unless found_files.empty?
+    raise 'Unsupported operating system'
   end
 
   def self.messages(partner = nil)
